@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment | HotWheels</title>
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+</head>
+<body>
+    <h2 class="text-center mt-5">Complete Your Payment</h2>
+    <button id="rzp-button" style="display:block;margin:50px auto;">Pay ₹{{ order.amount }}</button>
+
+    <script>
+        var options = {
+            "key": "{{ razorpay_merchant_key }}",
+            "amount": "{{ amount }}", // in paise
+            "currency": "{{ currency }}",
+            "name": "HotWheels Store",
+            "description": "UPI Payment",
+            "order_id": "{{ razorpay_order_id }}",
+            "handler": function (response){
+                // Post to server for verification
+                var form = document.createElement("form");
+                form.method = "POST";
+                form.action = "{{ callback_url }}";
+
+                var csrf = document.createElement("input");
+                csrf.name = "csrfmiddlewaretoken";
+                csrf.value = "{{ csrf_token }}";
+                form.appendChild(csrf);
+
+                var payment_id = document.createElement("input");
+                payment_id.name = "razorpay_payment_id";
+                payment_id.value = response.razorpay_payment_id;
+                form.appendChild(payment_id);
+
+                var order_id = document.createElement("input");
+                order_id.name = "razorpay_order_id";
+                order_id.value = response.razorpay_order_id;
+                form.appendChild(order_id);
+
+                var signature = document.createElement("input");
+                signature.name = "razorpay_signature";
+                signature.value = response.razorpay_signature;
+                form.appendChild(signature);
+
+                document.body.appendChild(form);
+                form.submit();
+            },
+            "theme": {
+                "color": "#F37021"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        document.getElementById('rzp-button').onclick = function(e){
+            rzp1.open();
+            e.preventDefault();
+        }
+    </script>
+</body>
+</html>

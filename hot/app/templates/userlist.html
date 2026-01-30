@@ -1,0 +1,139 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User List | HotWheels</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ea580c, #fb923c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .userlist-container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 800px;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .userlist-logo {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .userlist-logo img {
+            width: 70px;
+        }
+
+        .userlist-title {
+            text-align: center;
+            color: #ea580c;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        thead {
+            background-color: #ea580c;
+            color: #ffffff;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: center;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        tbody tr:hover {
+            background-color: #fff7ed;
+        }
+
+        .no-users {
+            text-align: center;
+            color: #dc2626;
+            font-weight: 600;
+            margin-top: 15px;
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .back-link a {
+            color: #ea580c;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .back-link a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="userlist-container">
+
+        <div class="userlist-logo">
+            <img src="{% static 'images/logo.png' %}" alt="HotWheels Logo">
+        </div>
+
+        <h2 class="userlist-title">Registered Users</h2>
+
+        {% if users %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Username</th>
+                        <th>Email</th>
+                        <th>Date Joined</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for user in users %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.date_joined|date:"d M Y" }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p class="no-users">No users found</p>
+        {% endif %}
+
+        <div class="back-link">
+            <a href="../adminlogin/dashboard">← Back to Dashboard</a>
+        </div>
+
+    </div>
+
+</body>
+</html>

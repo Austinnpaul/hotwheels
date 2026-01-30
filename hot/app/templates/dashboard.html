@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background-color: #f3f4f6;
+            padding: 30px;
+        }
+
+        .dashboard-container {
+            max-width: 900px;
+            margin: auto;
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #ea580c;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            margin-top: 30px;
+            margin-bottom: 20px;
+            color: #111827;
+        }
+
+        hr {
+            margin: 20px 0;
+            border: none;
+            border-top: 1px solid #e5e7eb;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .dashboard-btn {
+            display: inline-block;
+            text-align: center;
+            padding: 14px;
+            background-color: #ea580c;
+            color: #ffffff;
+            font-weight: 600;
+            border-radius: 10px;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+        }
+
+        .dashboard-btn:hover {
+            background-color: #c2410c;
+        }
+
+        .secondary-btn {
+            background-color: #374151;
+        }
+
+        .secondary-btn:hover {
+            background-color: #1f2937;
+        }
+
+        .danger-btn {
+            background-color: #dc2626;
+        }
+
+        .danger-btn:hover {
+            background-color: #b91c1c;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-container">
+        <h1>Welcome Admin!</h1>
+        <p>Manage HotWheels products and users from here.</p>
+
+        <hr>
+
+        <h2>HotWheels Products Dashboard</h2>
+
+        <div class="button-grid">
+            <a href="../addproduct/" class="dashboard-btn">Add Product</a>
+            <a href="../product_list" class="dashboard-btn">Product List</a>
+            <a href="../user_list" class="dashboard-btn">User List</a>
+            <a href="../" class="dashboard-btn secondary-btn">Back to Home</a>
+            <a href="../"class="dashboard-btn danger-btn">Logout</a>
+        </div>
+    </div>
+
+</body>
+</html>

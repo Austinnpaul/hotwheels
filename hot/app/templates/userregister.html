@@ -1,0 +1,150 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Register | HotWheels</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #ea580c, #fb923c);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .register-container {
+            background-color: #ffffff;
+            width: 100%;
+            max-width: 420px;
+            padding: 30px;
+            border-radius: 14px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .register-logo {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .register-logo img {
+            width: 70px;
+        }
+
+        .register-title {
+            text-align: center;
+            color: #ea580c;
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            color: #dc2626;
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 12px;
+        }
+
+        .register-form {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .register-form input {
+            width: 100%;
+            padding: 11px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+
+        .register-form input:focus {
+            outline: none;
+            border-color: #ea580c;
+            box-shadow: 0 0 0 2px rgba(234, 88, 12, 0.3);
+        }
+
+        .register-btn {
+            background-color: #ea580c;
+            color: #ffffff;
+            font-weight: 600;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 15px;
+            transition: background-color 0.2s ease;
+            margin-top: 5px;
+        }
+
+        .register-btn:hover {
+            background-color: #c2410c;
+        }
+
+        .register-links {
+            text-align: center;
+            margin-top: 16px;
+            font-size: 14px;
+        }
+
+        .register-links a {
+            color: #ea580c;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .register-links a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="register-container">
+
+        <div class="register-logo">
+            <img src="{% static 'images/logo.png' %}" alt="HotWheels Logo">
+        </div>
+
+        <h2 class="register-title">Create Account</h2>
+
+        {% if messages %}
+            {% for message in messages %}
+                <p class="error-message">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post" action="../userregister/" class="register-form" >
+            {% csrf_token %}
+
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password1" placeholder="Password" required>
+            <input type="password" name="password2" placeholder="Confirm Password" required>
+
+            <button type="submit" class="register-btn">Register</button>
+        </form>
+
+        <div class="register-links">
+            <p>
+                Already have an account?
+                <a href="../userlogin/">Login</a>
+            </p>
+        </div>
+
+    </div>
+
+</body>
+</html>
