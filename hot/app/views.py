@@ -270,6 +270,11 @@ def edit_car(request, id):
 
     return render(request, 'edit.html', {'car': car})
 
+def remove_wishlist(request, id):
+    Wishlist.objects.filter(user=request.user, car_id=id).delete()
+    messages.info(request, "Item removed from wishlist")
+    return redirect('wishlist')
+
 
 
 # Initialize Razorpay client

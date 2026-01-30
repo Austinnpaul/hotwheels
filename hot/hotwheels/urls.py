@@ -22,8 +22,8 @@ from django.conf import settings
 from app import views
 
 
-from django.urls import path
-from app import views
+# from django.urls import path
+# from app import views
 
 
 urlpatterns = [
@@ -53,6 +53,7 @@ urlpatterns = [
     path('wishlist/', views.wishlist_view, name='wishlist'),
     path('wishlist/remove/<int:id>/', views.remove_from_wishlist, name='remove_from_wishlist'),
     path('edit/<int:id>/', views.edit_car, name='editcar'),
+    path('removewishlist/<int:id>/', views.remove_wishlist, name='remove_wishlist'),
 
 
     path('buynow/', views.buy_now, name='buy_now'),
