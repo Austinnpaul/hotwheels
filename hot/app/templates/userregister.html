@@ -1,11 +1,10 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Register | HotWheels</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
         * {
@@ -48,11 +47,22 @@
             margin-bottom: 20px;
         }
 
-        .error-message {
-            color: #dc2626;
+        .message {
+            padding: 10px;
+            border-radius: 6px;
+            margin-bottom: 12px;
             font-size: 14px;
             text-align: center;
-            margin-bottom: 12px;
+        }
+
+        .error {
+            background-color: #fee2e2;
+            color: #dc2626;
+        }
+
+        .success {
+            background-color: #dcfce7;
+            color: #15803d;
         }
 
         .register-form {
@@ -112,39 +122,43 @@
 
 <body>
 
-    <div class="register-container">
+<div class="register-container">
 
-        <div class="register-logo">
-            <img src="{% static 'images/logo.png' %}" alt="HotWheels Logo">
-        </div>
-
-        <h2 class="register-title">Create Account</h2>
-
-        {% if messages %}
-            {% for message in messages %}
-                <p class="error-message">{{ message }}</p>
-            {% endfor %}
-        {% endif %}
-
-        <form method="post" action="../userregister/" class="register-form" >
-            {% csrf_token %}
-
-            <input type="text" name="username" placeholder="Username" required>
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password1" placeholder="Password" required>
-            <input type="password" name="password2" placeholder="Confirm Password" required>
-
-            <button type="submit" class="register-btn">Register</button>
-        </form>
-
-        <div class="register-links">
-            <p>
-                Already have an account?
-                <a href="../userlogin/">Login</a>
-            </p>
-        </div>
-
+    <div class="register-logo">
+        <img src="{% static 'images/logo.png' %}" alt="HotWheels Logo">
     </div>
+
+    <h2 class="register-title">Create Account</h2>
+
+    <!-- Django Messages -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="message {% if message.tags %}{{ message.tags }}{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <!-- Registration Form -->
+    <form method="post" action="{% url 'userregister' %}" class="register-form">
+        {% csrf_token %}
+
+        <input type="text" name="username" placeholder="Username" required>
+        <input type="email" name="email" placeholder="Email" required>
+        <input type="password" name="password1" placeholder="Password" required>
+        <input type="password" name="password2" placeholder="Confirm Password" required>
+
+        <button type="submit" class="register-btn">Register</button>
+    </form>
+
+    <div class="register-links">
+        <p>
+            Already have an account?
+            <a href="{% url 'userlogin' %}">Login</a>
+        </p>
+    </div>
+
+</div>
 
 </body>
 </html>

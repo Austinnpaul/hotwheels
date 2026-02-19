@@ -1,0 +1,27 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Edit Profile</title>
+</head>
+<body style="font-family: Arial; background:#fff7ed; padding:40px;">
+
+<h2>Edit Profile</h2>
+
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Username</label><br>
+    <input type="text" name="username" value="{{ user.username }}"><br><br>
+
+    <label>Email</label><br>
+    <input type="email" name="email" value="{{ user.email }}"><br><br>
+
+    <button type="submit">Save Changes</button>
+</form>
+
+<br>
+<a href="{% url 'profile' %}">← Back to Profile</a>
+
+</body>
+</html>

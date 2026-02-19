@@ -19,7 +19,8 @@ import razorpay
 import json
 from django.views.decorators.csrf import csrf_exempt
 
-
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render
 # from django.shortcuts import render
 
 def about(request):
@@ -71,22 +72,34 @@ def adminlist(request):
 
 
 
+
 def userregister(request):
     if request.method == 'POST':
         username = request.POST['username']
         password1 = request.POST['password1']
         password2 = request.POST['password2']
         email = request.POST['email']
+
         if password1 == password2:
-            user = User.objects.create_user(username=username,password=password1,email=email)
+
+            if User.objects.filter(username=username).exists():
+                messages.error(request, "Username already exists")
+                return redirect('userregister')
+
+            user = User.objects.create_user(
+                username=username,
+                password=password1,
+                email=email
+            )
             user.save()
-            return redirect(userlogin)
+
+            return redirect('userlogin')  # ✅ correct way
+
         else:
-            print("password does't match")
-            return redirect(userregister)
+            messages.error(request, "Passwords do not match")
+            return redirect('userregister')
+
     return render(request, 'userregister.html')
-
-
 
 def userlogin(request):
 
@@ -280,38 +293,27 @@ def remove_wishlist(request, id):
 # Initialize Razorpay client
 client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
 
-
+@login_required
 def buy_now(request):
+    items = Cart.objects.filter(user=request.user)
+
+    total = 0
+    for item in items:
+        item.subtotal = item.car.price * item.quantity
+        total += item.subtotal
+
     if request.method == "POST":
         name = request.POST.get("name")
-        amount = float(request.POST.get("amount")) * 100  # Razorpay expects paise
+        amount = request.POST.get("amount")
 
-        # Create an order in Razorpay
-        razorpay_order = client.order.create({
-            "amount": int(amount),
-            "currency": "INR",
-            "payment_capture": 1  # auto capture
-        })
+        # 👉 Payment logic here (Razorpay / save order)
 
-        # Create Order in DB
-        order = Order.objects.create(
-            name=name,
-            amount=amount/100,  # store in INR
-            status=PaymentStatus.PENDING,
-            provider_order_id=razorpay_order['id']
-        )
+        return redirect("success")
 
-        context = {
-            "order": order,
-            "razorpay_order_id": razorpay_order['id'],
-            "razorpay_merchant_key": settings.RAZORPAY_KEY_ID,
-            "amount": amount,
-            "currency": "INR",
-            "callback_url": "/paymenthandler/",
-        }
-        return render(request, "payment.html", context)
-
-    return render(request, "buynow.html")
+    return render(request, "buynow.html", {
+        "items": items,
+        "total": total
+    })
 
 
 @csrf_exempt
@@ -347,3 +349,22 @@ def paymenthandler(request):
             return render(request, "payment_failed.html", {"order": order})
 
     return HttpResponseBadRequest("Invalid request method")
+
+
+@login_required
+def profile(request):
+    return render(request, 'profile.html')
+
+
+@login_required
+def edit_profile(request):
+    user = request.user
+
+    if request.method == "POST":
+        user.username = request.POST.get("username")
+        user.email = request.POST.get("email")
+        user.save()
+        messages.success(request, "Profile updated successfully")
+        return redirect("profile")
+
+    return render(request, "edit_profile.html")
